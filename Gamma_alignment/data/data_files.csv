@@ -1,0 +1,6 @@
+genome,genes,connections
+834734,./data/DEMHIR_gene_info_processing.csv,./data/DEMHIR_vs_GEFVIR.csv
+938041,./data/GEFVIR_gene_info_processing.csv,./data/GEFVIR_vs_MEPCIT.csv
+538294,./data/MEPCIT_gene_info_processing.csv,./data/MEPCIT_vs_MEPMAR.csv
+352837,./data/MEPMAR_gene_info_processing.csv,./data/MEPMAR_vs_HETPER.csv
+628221,./data/HETPER_gene_info_processing.csv,
