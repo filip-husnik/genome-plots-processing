@@ -1,45 +1,23 @@
 import processing.svg.*;
 
-// Genome sizes and file names in the following three arrays have to be modified based on your data
-int[] genome = {
-  170756, //TPPAVE
-  138410, //TPMHIR
-  141620, //TPFVIR
-  144042, //TPPLON
-  138927, //TPPCIT
-  140306, //TPPMAR
-  143340, //TPTPER
-}; //genome sizes in base pairs, sorted based on the host phylogeny (the same way as files below)
 
-String[] genes = {
-  "./data/TPPAVE_gene_info_processing.csv", 
-  "./data/TPMHIR_gene_info_processing.csv", 
-  "./data/TPFVIR_gene_info_processing.csv", 
-  "./data/TPPLON_gene_info_processing.csv", 
-  "./data/TPPCIT_gene_info_processing.csv", 
-  "./data/TPPMAR_gene_info_processing.csv", 
-  "./data/TPTPER_gene_info_processing.csv"
-}; //gene coordinates and functions
 
-String[] connections = {
-  "./data/PAVE_vs_MHIR.csv", 
-  "./data/MHIR_vs_FVIR.csv", 
-  "./data/FVIR_vs_PLON.csv", 
-  "./data/PLON_vs_PCIT.csv", 
-  "./data/PCIT_vs_PMAR.csv", 
-  "./data/PMAR_vs_TPER.csv"
-}; //alignment connections
+//Input is a CSV file called "data_files.csv" placed in the data folder where:
+//                        column 1 = genome sizes in base pairs, sorted on the host phylogeny (genome)
+//                        column 2 = path to files with gene coordinates and functions (genes)
+// 
+
 
 
 // Other global variables
-int genome_nr = genome.length;
+Table gene_table;
 float figure_width = 1800; // 100 pixels smaller than the canvas width to have some free space
 float figure_height = 1000; // same as canvas height
-float max_genome = genome[0];
-float ratio = max_genome/figure_width; //(bps per pixel)
 int height_unit = 5;
 int gene_height = 3 * height_unit;
 int genome_height = 10 * height_unit;
+
+
 
 void setup() {
   noLoop();
@@ -47,9 +25,16 @@ void setup() {
   background(255);
   strokeWeight(0.003);
   beginRecord(SVG, "genome_alignment.svg");
+  gene_table = loadTable("./data/data_files.csv", "header");
 }
 
+
 void drawGenes(String FileName, float genome_size, int y) {
+  
+  int[] genome = gene_table.getIntColumn(0);
+  float max_genome = max(genome);
+  float ratio = max_genome/figure_width; //(bps per pixel)
+  
   float offset = figure_height-(figure_height/(max_genome/genome_size));
   Table table = loadTable(FileName);
   int numEntries = table.getRowCount();
@@ -88,6 +73,11 @@ void drawGenes(String FileName, float genome_size, int y) {
 }
 
 void drawConnections(String FileName, int length1, int length2, int y1, int y2) {
+  
+  int[] genome = gene_table.getIntColumn(0);
+  float max_genome = max(genome);
+  float ratio = max_genome/figure_width; //(bps per pixel)
+  
   Table table = loadTable(FileName);
   int numEntries = table.getRowCount();
   for (int a = 0; a < numEntries; a += 1) {
@@ -128,24 +118,27 @@ void drawConnections(String FileName, int length1, int length2, int y1, int y2) 
   }
 }
 
+
+
 void draw() {
-
-  drawGenes(genes[0], genome[0], 2*genome_height);
-  drawGenes(genes[1], genome[1], 4*genome_height);
-  drawGenes(genes[2], genome[2], 6*genome_height);
-  drawGenes(genes[3], genome[3], 8*genome_height);
-  drawGenes(genes[4], genome[4], 10*genome_height);
-  drawGenes(genes[5], genome[5], 12*genome_height);
-  drawGenes(genes[6], genome[6], 14*genome_height);
-
-  drawConnections(connections[0], genome[0], genome[1], 2*genome_height, 4*genome_height); //csv file, genome size 1, genome size 2, y1, y2
-  drawConnections(connections[1], genome[1], genome[2], 4*genome_height, 6*genome_height);
-  drawConnections(connections[2], genome[2], genome[3], 6*genome_height, 8*genome_height);
-  drawConnections(connections[3], genome[3], genome[4], 8*genome_height, 10*genome_height);
-  drawConnections(connections[4], genome[4], genome[5], 10*genome_height, 12*genome_height);
-  drawConnections(connections[5], genome[5], genome[6], 12*genome_height, 14*genome_height);
-
-  //TODO: for loop in the draw function
+  
+  //To draw just genes
+  int num_genes = gene_table.getIntColumn(0).length;
+  if (num_genes == gene_table.getStringColumn(1).length) {
+    for (int i = 0; i < num_genes; i++) {
+      drawGenes(gene_table.getString(i,1), gene_table.getInt(i,0), (i+1)*2*genome_height);
+    }
+  }
+  
+  
+  //To draw connections (if there are any)
+  String[] connections = gene_table.getStringColumn(2);
+  for (int i = 0; i < connections.length; i++) {
+    if (connections[i] != "") {
+      drawConnections(gene_table.getString(i,2), gene_table.getInt(i,0), gene_table.getInt(i+1,0), (i+1)*2*genome_height, (i+2)*2*genome_height);
+    
+    }
+  }
 
   save("genome_alignment.tif");
   endRecord();

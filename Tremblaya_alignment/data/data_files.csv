@@ -1,0 +1,8 @@
+genome,genes,connections
+170756,./data/TPPAVE_gene_info_processing.csv,./data/PAVE_vs_MHIR.csv
+138410,./data/TPMHIR_gene_info_processing.csv,./data/MHIR_vs_FVIR.csv
+141620,./data/TPFVIR_gene_info_processing.csv,./data/FVIR_vs_PLON.csv
+144042,./data/TPPLON_gene_info_processing.csv,./data/PLON_vs_PCIT.csv
+138927,./data/TPPCIT_gene_info_processing.csv,./data/PCIT_vs_PMAR.csv
+140306,./data/TPPMAR_gene_info_processing.csv,./data/PMAR_vs_TPER.csv
+143340,./data/TPTPER_gene_info_processing.csv,
