@@ -1,0 +1,8 @@
+genome,genes,connections
+140306,./data/TPPMAR_contig000001_gene_info_processing.csv,./data/TPPMAR_contig000001_vs_TPTPER_contig000001.csv
+143340,./data/TPTPER_contig000001_gene_info_processing.csv,./data/TPTPER_contig000001_vs_TPPLON_contig000001.csv
+144042,./data/TPPLON_contig000001_gene_info_processing.csv,./data/TPPLON_contig000001_vs_NC_015736.csv
+138927,./data/NC_015736_gene_info_processing.csv,./data/NC_015736_vs_NC_021555.csv
+170756,./data/NC_021555_gene_info_processing.csv,./data/NC_021555_vs_TPFVIR_contig000001.csv
+141620,./data/TPFVIR_contig000001_gene_info_processing.csv,./data/TPFVIR_contig000001_vs_TPMHIR_contig000001.csv
+138410,./data/TPMHIR_contig000001_gene_info_processing.csv
