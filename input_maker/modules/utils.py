@@ -182,6 +182,9 @@ def create_gene_info_csv(gb_record, out_csv):
     return record_names, genome_sizes
 
 def get_genome_order(record_names, order_file):
+    if len(record_names) == 0:
+        print("ERROR: Genbank folder is empty, or genbank files do not meet specs"),
+        sys.stdout.flush()
     genome_order = []
     if order_file:
         with open(order_file, "r") as f:
@@ -189,6 +192,9 @@ def get_genome_order(record_names, order_file):
             for record in order_list:
                 if record in record_names:
                     genome_order.append(record)
+        if len(genome_order) == 0:
+            print("ERROR: Order file is empty, does not meet specs, or does not have any matching record names from genbank files."),
+            sys.stdout.flush()
     else:
         genome_order = record_names
     

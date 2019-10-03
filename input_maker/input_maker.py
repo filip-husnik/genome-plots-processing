@@ -25,13 +25,13 @@ data_directory = script_path + data_folder            #directory to store data f
 
 
 gb_records,record_names,genome_sizes = utils.get_dir_records(gbfile_directory) #get all records from a dir with genbank files
+
 for gb_record in gb_records:
     out_path = data_directory + gb_record.name.strip()
     utils.genbank_to_fasta(gb_record, out_path + ".fasta")  #create fasta from gb files
     utils.create_gene_info_csv(gb_record, out_path + "_gene_info_processing.csv") #create gene info csv files
 
         
-
 
 genome_order = utils.get_genome_order(record_names, args.order_file)
 
